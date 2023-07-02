@@ -7,5 +7,5 @@ yarn.lock
 start
 
 # folders
-build
+out
 node_modules
