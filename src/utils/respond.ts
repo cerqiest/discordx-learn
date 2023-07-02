@@ -6,33 +6,39 @@ import {
 } from "discord.js";
 import tag from "./tag.ts";
 
-export default async (
-  interaction: CommandInteraction | MessageComponentInteraction,
-  builtEmbed: EmbedBuilder,
-  replyOptions: any = {}
-) => {
-  let newEmbed = builtEmbed.setTimestamp().setFooter({
-    text: `Requested by ${tag(interaction.user)}`,
-    iconURL: interaction.user.displayAvatarURL(),
+type RespondOptions = {
+  interaction: CommandInteraction | MessageComponentInteraction;
+  builtEmbed: EmbedBuilder;
+  editMessageIfAlreadyReplied?: boolean;
+  replyOptions?: any;
+};
+
+export default async (options: RespondOptions) => {
+  let newEmbed = options.builtEmbed.setTimestamp().setFooter({
+    text: `Requested by ${tag(options.interaction.user)}`,
+    iconURL: options.interaction.user.displayAvatarURL(),
   });
 
-  if (interaction.replied) {
-    await interaction.followUp({
+  if (options.interaction.replied && !options.editMessageIfAlreadyReplied) {
+    await options.interaction.followUp({
       embeds: [newEmbed],
-      ...replyOptions,
+      ...options.replyOptions,
     });
-    return interaction;
-  } else if (interaction.deferred) {
-    await interaction.editReply({
+    return options.interaction;
+  } else if (
+    options.interaction.deferred ||
+    options.editMessageIfAlreadyReplied
+  ) {
+    await options.interaction.editReply({
       embeds: [newEmbed],
-      ...replyOptions,
+      ...options.replyOptions,
     });
-    return interaction;
+    return options.interaction;
   }
 
-  await interaction.reply({
+  await options.interaction.reply({
     embeds: [newEmbed],
-    ...replyOptions,
+    ...options.replyOptions,
   });
-  return interaction;
+  return options.interaction;
 };

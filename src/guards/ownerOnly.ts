@@ -1,11 +1,26 @@
-import { GuardFunction, ArgsOf } from "discordx";
+import { Colors, CommandInteraction, EmbedBuilder } from "discord.js";
+import { Client, Next } from "discordx";
+import respond from "../utils/respond.ts";
 
-export const ownerOnly: GuardFunction<ArgsOf<"interactionCreate">> = async (
-  [interaction]: ArgsOf<"interactionCreate">,
-  client,
-  next
-) => {
-  if (interaction.user.id === process.env.OWNER_ID) {
+export async function ownerOnly(
+  arg: CommandInteraction,
+  client: Client,
+  next: Next
+) {
+  if (arg.user.id === process.env.OWNER_ID) {
     await next();
+  } else {
+    await respond({
+      interaction: arg,
+      builtEmbed: new EmbedBuilder()
+        .setColor(Colors.Red)
+        .setTitle("Error")
+        .setDescription(
+          "You are lacking the required permission(s) to use this command. If you believe this is an error, please contact the bot owner."
+        ),
+      replyOptions: {
+        ephemeral: true,
+      },
+    });
   }
-};
+}

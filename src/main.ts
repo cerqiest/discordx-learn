@@ -1,6 +1,7 @@
 import { dirname, importx } from "@discordx/importer";
 import type { Interaction } from "discord.js";
 import {
+  Colors,
   CommandInteraction,
   EmbedBuilder,
   IntentsBitField,
@@ -8,7 +9,6 @@ import {
 } from "discord.js";
 import { Client } from "discordx";
 import respond from "./utils/respond.ts";
-import Colors from "./utils/colors.ts";
 
 export const bot = new Client({
   botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
@@ -50,15 +50,18 @@ bot.on("interactionCreate", async (interaction: Interaction) => {
     );
     console.error(e);
 
-    await respond(
+    await respond({
       interaction,
-      new EmbedBuilder()
-        .setColor(Colors.RED)
+      builtEmbed: new EmbedBuilder()
+        .setColor(Colors.Red)
         .setTitle("Error")
         .setDescription(
           "An unexepected error occured while processing your request. Please try again later."
-        )
-    );
+        ),
+      replyOptions: {
+        ephemeral: true,
+      },
+    });
   }
 });
 

@@ -1,7 +1,11 @@
-import { APIEmbedField, CommandInteraction, EmbedBuilder } from "discord.js";
+import {
+  APIEmbedField,
+  CommandInteraction,
+  EmbedBuilder,
+  Colors,
+} from "discord.js";
 import { Client, Discord, Guard, Slash } from "discordx";
 import respond from "../utils/respond.ts";
-import Colors from "../utils/colors.ts";
 import { ownerOnly } from "../guards/ownerOnly.ts";
 
 @Discord()
@@ -12,7 +16,7 @@ export abstract class Basic {
   async ping(interaction: CommandInteraction) {
     const fields = [
       {
-        name: "Interaction Latency (new)",
+        name: "Interaction Latency",
         value: `${Date.now() - interaction.createdTimestamp}ms`,
       },
       interaction.client.ws.ping > 0
@@ -23,29 +27,12 @@ export abstract class Basic {
         : undefined,
     ].filter((field) => field !== undefined) as APIEmbedField[];
 
-    await respond(
+    await respond({
       interaction,
-      new EmbedBuilder()
-        .setColor(Colors.WHITE)
+      builtEmbed: new EmbedBuilder()
+        .setColor(Colors.Blue)
         .setTitle("Pong!")
-        .addFields(...fields)
-    );
-  }
-
-  @Slash({
-    description: "Reload the bot's commands",
-  })
-  @Guard(ownerOnly)
-  async reload(interaction: CommandInteraction, client: Client) {
-    await client.clearApplicationCommands();
-    await client.initApplicationCommands();
-
-    await respond(
-      interaction,
-      new EmbedBuilder()
-        .setColor(Colors.WHITE)
-        .setTitle("Success")
-        .setDescription("All commands have been reloaded successfully.")
-    );
+        .addFields(...fields),
+    });
   }
 }
