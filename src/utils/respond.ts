@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 
-export default (
+export default async (
   interaction: CommandInteraction | MessageComponentInteraction,
   builtEmbed: EmbedBuilder,
   replyOptions?: any
@@ -20,18 +20,21 @@ export default (
       iconURL: interaction.user.displayAvatarURL(),
     });
 
-  if (interaction instanceof CommandInteraction) {
-    interaction.replied || interaction.deferred
-      ? interaction.editReply({
-          embeds: [newEmbed],
-          ...replyOptions,
-        })
-      : interaction.reply({
-          embeds: [newEmbed],
-          ...replyOptions,
-        });
-  } else if (interaction instanceof MessageComponentInteraction) {
-    interaction.update({
+  if (interaction.replied) {
+    console.log("is replied");
+    await interaction.followUp({
+      embeds: [newEmbed],
+      ...replyOptions,
+    });
+  } else if (interaction.deferred) {
+    console.log("is deferred");
+    await interaction.editReply({
+      embeds: [newEmbed],
+      ...replyOptions,
+    });
+  } else {
+    console.log("is and not replied or deferred");
+    await interaction.reply({
       embeds: [newEmbed],
       ...replyOptions,
     });

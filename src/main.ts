@@ -32,16 +32,15 @@ bot.once("ready", async () => {
   console.log("Bot started");
 });
 
-bot.on("interactionCreate", (interaction: Interaction) => {
+bot.on("interactionCreate", async (interaction: Interaction) => {
   try {
-    bot.executeInteraction(interaction);
+    await bot.executeInteraction(interaction);
   } catch (e) {
-    console.log("caught error");
-
     if (
       !(interaction instanceof CommandInteraction) &&
       !(interaction instanceof MessageComponentInteraction)
     ) {
+      console.error("An error occured while processing an interaction");
       console.error(e);
       return;
     }
