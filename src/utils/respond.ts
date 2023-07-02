@@ -2,13 +2,14 @@ import {
   CommandInteraction,
   MessageComponentInteraction,
   EmbedBuilder,
+  Interaction,
 } from "discord.js";
 import tag from "./tag.ts";
 
 export default async (
   interaction: CommandInteraction | MessageComponentInteraction,
   builtEmbed: EmbedBuilder,
-  replyOptions?: any
+  replyOptions: any = {}
 ) => {
   let newEmbed = builtEmbed.setTimestamp().setFooter({
     text: `Requested by ${tag(interaction.user)}`,
@@ -16,22 +17,22 @@ export default async (
   });
 
   if (interaction.replied) {
-    console.log("is replied");
     await interaction.followUp({
       embeds: [newEmbed],
       ...replyOptions,
     });
+    return interaction;
   } else if (interaction.deferred) {
-    console.log("is deferred");
     await interaction.editReply({
       embeds: [newEmbed],
       ...replyOptions,
     });
-  } else {
-    console.log("is and not replied or deferred");
-    await interaction.reply({
-      embeds: [newEmbed],
-      ...replyOptions,
-    });
+    return interaction;
   }
+
+  await interaction.reply({
+    embeds: [newEmbed],
+    ...replyOptions,
+  });
+  return interaction;
 };

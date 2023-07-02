@@ -45,6 +45,11 @@ bot.on("interactionCreate", async (interaction: Interaction) => {
       return;
     }
 
+    console.error(
+      `An error occured while processing an interaction from ${interaction.user.tag} (${interaction.user.id})`
+    );
+    console.error(e);
+
     respond(
       interaction,
       new EmbedBuilder()

@@ -10,8 +10,8 @@ export abstract class Ping {
     description: "Get the latency between discord and the bot",
     defaultMemberPermissions: PermissionFlagsBits.SendMessages,
   })
-  ping(interaction: CommandInteraction): void {
-    respond(
+  async ping(interaction: CommandInteraction) {
+    await respond(
       interaction,
       new EmbedBuilder()
         .setColor(Colors.WHITE)
@@ -28,7 +28,7 @@ export abstract class Ping {
         )
     );
 
-    respond(
+    await respond(
       interaction,
       new EmbedBuilder()
         .setColor(Colors.WHITE)
