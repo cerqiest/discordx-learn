@@ -5,8 +5,7 @@ import {
   Colors,
 } from "discord.js";
 import { Client, Discord, Guard, Slash } from "discordx";
-import respond from "../utils/respond.ts";
-import { ownerOnly } from "../guards/ownerOnly.ts";
+import respond from "../utils/respond.js";
 
 @Discord()
 export abstract class Basic {

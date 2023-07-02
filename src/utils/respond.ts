@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
   Interaction,
 } from "discord.js";
-import tag from "./tag.ts";
+import tag from "./tag.js";
 
 type RespondOptions = {
   interaction: CommandInteraction | MessageComponentInteraction;

@@ -8,7 +8,7 @@ import {
   MessageComponentInteraction,
 } from "discord.js";
 import { Client } from "discordx";
-import respond from "./utils/respond.ts";
+import respond from "./utils/respond.js";
 
 export const bot = new Client({
   botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],

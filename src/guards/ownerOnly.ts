@@ -1,6 +1,6 @@
 import { Colors, CommandInteraction, EmbedBuilder } from "discord.js";
 import { Client, Next } from "discordx";
-import respond from "../utils/respond.ts";
+import respond from "../utils/respond.js";
 
 export async function ownerOnly(
   arg: CommandInteraction,
