@@ -50,7 +50,7 @@ bot.on("interactionCreate", async (interaction: Interaction) => {
     );
     console.error(e);
 
-    respond(
+    await respond(
       interaction,
       new EmbedBuilder()
         .setColor(Colors.RED)
