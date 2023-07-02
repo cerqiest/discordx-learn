@@ -3,22 +3,17 @@ import {
   MessageComponentInteraction,
   EmbedBuilder,
 } from "discord.js";
+import tag from "./tag.ts";
 
 export default async (
   interaction: CommandInteraction | MessageComponentInteraction,
   builtEmbed: EmbedBuilder,
   replyOptions?: any
 ) => {
-  let newEmbed = builtEmbed
-    .setAuthor({
-      name: interaction.user.tag,
-      iconURL: interaction.user.displayAvatarURL(),
-    })
-    .setTimestamp()
-    .setFooter({
-      text: `Requested by ${interaction.user.tag}`,
-      iconURL: interaction.user.displayAvatarURL(),
-    });
+  let newEmbed = builtEmbed.setTimestamp().setFooter({
+    text: `Requested by ${tag(interaction.user)}`,
+    iconURL: interaction.user.displayAvatarURL(),
+  });
 
   if (interaction.replied) {
     console.log("is replied");

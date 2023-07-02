@@ -1,3 +1,4 @@
-import { User } from "discord.js"
+import { User } from "discord.js";
 
-export default (user: User) => user.discriminator === "0000" ? true : false
+export default (user: User) =>
+  user.discriminator === "0" ? `@${user.username}` : user.tag;
